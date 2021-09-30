@@ -2,11 +2,32 @@ import type { GetStaticProps, NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 import { keys } from '../config'
+import { 
+  Container, 
+  Button, 
+  styled, 
+  Box 
+} from '@mui/material'
 
 import NavBar from '../components/NavBar'
-import { Container, Button } from '@mui/material'
+import MovieCard from '../components/MovieCard'
+import { IMovie } from '../types'
+
+const MovieContainer = styled(Container)(({ theme }) => ({
+
+  padding: theme.spacing(5),
+  backgroundColor: "#219ebc",
+
+}));
+
+const LoadButton = styled(Button)(({ theme }) => ({
+
+  backgroundColor: "#023047",
+  margin: "1rem",
+  alignSelf: "center"
+
+}));
 
 const Home: NextPage = () => {
 
@@ -72,36 +93,27 @@ const Home: NextPage = () => {
 
         <NavBar />
 
-        <Container >
 
-          <div>
+          <MovieContainer>
+            <div>
 
-            {
+              {
+                
+                movies.length > 0 && movies.map((movie, i) => (
+                  <MovieCard key={i} movie={movie} />
+                ))
+
+              }
               
-              movies.length > 0 && movies.map((movie, i) => (
-                <li key={i}>
-                  {movie.title}
-                  {movie.poster_path}
-                </li>
-              ))
+            </div>
 
-            }
-            
-          </div>
-
-          <Button onClick={handleLoadMore} >Load More</Button>
-
-        </Container>
+            <LoadButton onClick={handleLoadMore} size="large" variant="contained" >Load More</LoadButton>
+          
+          </MovieContainer>
       </main>
 
     </div>
   )
-}
-
-
-interface IMovie {
-  title: string
-  poster_path: string
 }
 
 
