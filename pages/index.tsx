@@ -1,7 +1,6 @@
-import type { GetStaticProps, NextPage } from 'next'
+import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Image from 'next/image'
 import { keys } from '../config'
 import { 
   IconButton, 
@@ -18,7 +17,7 @@ import { IMovie } from '../types'
 const MovieContainer = styled(Box)(({ theme }) => ({
 
   padding: theme.spacing(5),
-  backgroundColor: "#219ebc",
+  backgroundColor: "#dfe9e6",
 
 }));
 
@@ -32,7 +31,6 @@ const LoadButton = styled(Button)(({ theme }) => ({
 const Home: NextPage = () => {
 
   const [movies, setMovies] = useState<IMovie[]>([])
-  const [movieSort, setMovieSort] = useState("Ascending")
   const maxMoviePage = 25;
  
   useEffect(() => {

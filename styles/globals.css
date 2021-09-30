@@ -33,6 +33,10 @@ a {
   background-color: #91b99b;
 }
 
+.clickedMovieCard{
+  background-color: #536d5a;
+}
+
 @media only screen and (max-width: 600px) {
   
   .movieContainer{
