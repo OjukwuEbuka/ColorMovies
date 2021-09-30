@@ -14,7 +14,7 @@ import NavBar from '../components/NavBar'
 import MovieCard from '../components/MovieCard'
 import { IMovie } from '../types'
 
-const MovieContainer = styled(Container)(({ theme }) => ({
+const MovieContainer = styled(Box)(({ theme }) => ({
 
   padding: theme.spacing(5),
   backgroundColor: "#219ebc",
@@ -94,7 +94,7 @@ const Home: NextPage = () => {
         <NavBar />
 
 
-          <MovieContainer>
+          <MovieContainer className="movieContainer">
             <div>
 
               {

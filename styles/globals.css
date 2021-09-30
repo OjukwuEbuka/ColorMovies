@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+
 html,
 body {
   padding: 0;
@@ -13,4 +15,24 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.movieContainer{
+  margin: "0 5rem",
+}
+
+.movieImage{
+  width: 100px;
+}
+
+@media only screen and (max-width: 600px) {
+  
+  .movieContainer{
+    margin: "0 2rem",
+  }
+
+  .movieImage{
+    width: 200px;
+  }
+  
 }

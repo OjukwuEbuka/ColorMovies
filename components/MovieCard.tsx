@@ -16,19 +16,21 @@ const MovieImage = styled(Box)(({ theme }) => ({
 
 const MovieDetails = styled(Box)(({ theme }) => ({
 
-  ...theme.typography.body2,
   textAlign: 'center',
   color: theme.palette.text.secondary,
   verticalAlign: "bottom",
   height: "100%",
-  fontFamily: "Arial"
+  fontFamily: "Nunito Sans",
+  fontWeight: "bolder"
 
 }));
 
 const MyCard = styled(Box)(({ theme }) => ({
 
     marginTop: "1rem",
-    // backgroundColor: "#ffb703",
+    border: "0.5px dashed brown",
+    borderRadius: "1rem",
+    backgroundColor: "#b4e3c0",
   
 }));
 
@@ -38,15 +40,15 @@ const MovieCard = (props: IProps) => {
 
     <MyCard sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} sm={3}>
           <MovieImage>
-              <img width={100} src={`https://image.tmdb.org/t/p/w200/${props.movie.poster_path}`} />
+              <img className="movieImage" src={`https://image.tmdb.org/t/p/w200/${props.movie.poster_path}`} />
           </MovieImage>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} sm={6}>
           <MovieDetails sx={{ flexGrow: 1 }}>{props.movie.title} - {props.movie.release_date}</MovieDetails>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} sm={3}>
           <MovieDetails>{props.movie.vote_average}</MovieDetails>
         </Grid>
       </Grid>
