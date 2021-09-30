@@ -28,11 +28,14 @@ const LoadButton = styled(Button)(({ theme }) => ({
 
 }));
 
+enum MovieSortMode {ASCENDING, DESCENDING};
+
 const Home: NextPage = () => {
 
   const [movies, setMovies] = useState<IMovie[]>([])
   const maxMoviePage = 25;
   const [clickedMovies, setClickedMovies] = useState<number[]>([])
+  const [movieSortMode, setMovieSortMode] = useState<MovieSortMode>(MovieSortMode.DESCENDING)
 
   
  
@@ -65,21 +68,31 @@ const Home: NextPage = () => {
 
     try {
 
-      let newMovies: IMovie[] = [];
+      let loadedMovies: IMovie[] = [];
   
       let res = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${keys.apiKey}&page=${moviePageNumber}`)
       let jsonData = await res.json() 
     
       if(jsonData.results && jsonData.results.length > 1){
   
-        newMovies = jsonData.results as IMovie[];
+        loadedMovies = jsonData.results as IMovie[];
+        let newMoviesArray = []
+
+        if(movieSortMode === MovieSortMode.ASCENDING){
+
+          loadedMovies = loadedMovies.sort(sortAscendingHelper)
+          newMoviesArray = [...loadedMovies, ...movies]
+
+        }
+        else
+        {
+          newMoviesArray = [...movies, ...loadedMovies]
+        }
   
-        setMovies([...movies, ...newMovies])
-  
-        console.log(newMovies)
+        setMovies(newMoviesArray)
 
       }  
-      
+
     } catch (error) {
       console.log(error)
     }
@@ -101,34 +114,44 @@ const Home: NextPage = () => {
 
   const sortDescending = () => {
 
-    let currentMovies = [...movies].sort((movie1: IMovie, movie2: IMovie) => {
-      if(parseFloat(movie1.vote_average) > parseFloat(movie2.vote_average)){
-          return -1;
-      } else if(parseFloat(movie1.vote_average) < parseFloat(movie2.vote_average)) {
-          return 1;
-      } else {
-          return 0;
-      }
-    });
+    let currentMovies = [...movies].sort(sortDescendingHelper);
 
+    setMovieSortMode(MovieSortMode.DESCENDING)
     setMovies(currentMovies)
     
   }
 
   const sortAscending = () => {
 
-    let currentMovies = [...movies].sort((movie1: IMovie, movie2: IMovie) => {
-      if(parseFloat(movie1.vote_average) < parseFloat(movie2.vote_average)){
-          return -1;
-      } else if(parseFloat(movie1.vote_average) > parseFloat(movie2.vote_average)) {
-          return 1;
-      } else {
-          return 0;
-      }
-    });
+    let currentMovies = [...movies].sort(sortAscendingHelper);
 
+    setMovieSortMode(MovieSortMode.ASCENDING)
     setMovies(currentMovies)
     
+  }
+
+  const sortDescendingHelper = (movie1: IMovie, movie2: IMovie) => {
+
+    if(parseFloat(movie1.vote_average) > parseFloat(movie2.vote_average)){
+        return -1;
+    } else if(parseFloat(movie1.vote_average) < parseFloat(movie2.vote_average)) {
+        return 1;
+    } else {
+        return 0;
+    }
+
+  }
+
+  const sortAscendingHelper = (movie1: IMovie, movie2: IMovie) => {
+
+    if(parseFloat(movie1.vote_average) < parseFloat(movie2.vote_average)){
+        return -1;
+    } else if(parseFloat(movie1.vote_average) > parseFloat(movie2.vote_average)) {
+        return 1;
+    } else {
+        return 0;
+    }
+
   }
 
   const handleMovieStarClick = (isMovieClicked: boolean, movieId: number) => {
