@@ -18,7 +18,6 @@ const MovieImage = styled(Box)(({ theme }) => ({
 const MovieDetails = styled(Box)(({ theme }) => ({
 
   textAlign: 'center',
-  color: theme.palette.text.secondary,
   verticalAlign: "bottom",
   height: "100%",
   fontFamily: "Nunito Sans",
@@ -79,7 +78,7 @@ const MovieCard = (props: IProps) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                
+
             </Grid>
         </MyCard>
 
