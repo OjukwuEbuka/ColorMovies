@@ -32,6 +32,9 @@ const Home: NextPage = () => {
 
   const [movies, setMovies] = useState<IMovie[]>([])
   const maxMoviePage = 25;
+  const [clickedMovies, setClickedMovies] = useState<number[]>([])
+
+  
  
   useEffect(() => {
 
@@ -43,9 +46,25 @@ const Home: NextPage = () => {
   
   })
 
+
+  useEffect(() => {
+
+    const clickedMoviesStorage = localStorage.getItem("colorMovies");
+    const clickedMoviesObject = clickedMoviesStorage ? JSON.parse(clickedMoviesStorage) : {ids: []};
+    
+    if(clickedMoviesObject.ids.length > 0){
+
+      console.log([...clickedMoviesObject.ids])
+      setClickedMovies([...clickedMoviesObject.ids])
+
+    }
+
+  }, [])
+
   const handleLoadMovies = async (moviePageNumber: number) => {
 
     try {
+
       let newMovies: IMovie[] = [];
   
       let res = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${keys.apiKey}&page=${moviePageNumber}`)
@@ -58,7 +77,9 @@ const Home: NextPage = () => {
         setMovies([...movies, ...newMovies])
   
         console.log(newMovies)
+
       }  
+      
     } catch (error) {
       console.log(error)
     }
@@ -110,6 +131,26 @@ const Home: NextPage = () => {
     
   }
 
+  const handleMovieStarClick = (isMovieClicked: boolean, movieId: number) => {
+
+    let newClickedMoviesArray = [];
+
+    if(isMovieClicked){
+        
+        newClickedMoviesArray = [...clickedMovies].filter(id => movieId !== id);
+        
+    }
+    else
+    {
+        
+        newClickedMoviesArray = [...clickedMovies, movieId];
+    }
+
+    localStorage.setItem("colorMovies", JSON.stringify({ids: newClickedMoviesArray}))
+    setClickedMovies(newClickedMoviesArray)
+        
+  }
+
   return (
     <div>
       <Head>
@@ -143,7 +184,13 @@ const Home: NextPage = () => {
               {
                 
                 movies.length > 0 && movies.map((movie, i) => (
-                  <MovieCard key={i} movie={movie} />
+
+                  <MovieCard 
+                    key={i} movie={movie} 
+                    isMovieClicked={clickedMovies.includes(movie.id)} 
+                    handleMovieStarClick={handleMovieStarClick}
+                  />
+
                 ))
 
               }

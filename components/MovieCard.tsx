@@ -40,52 +40,18 @@ const MyCard = styled(Box)(({ theme }) => ({
 
 const MovieCard = (props: IProps) => {
 
-    const [isMovieClicked, setIsMovieClicked] = useState(false);
     const dateArray = props.movie.release_date.split('-')
-
-    useEffect(() => {
-
-        const clickedMoviesStorage = localStorage.getItem("colorMovies");
-        const clickedMoviesObject = clickedMoviesStorage ? JSON.parse(clickedMoviesStorage) : {ids: []};
-        
-        if(clickedMoviesObject.ids.includes(props.movie.id)){
-
-            setIsMovieClicked(true)
-        }
-
-    }, [])
 
     const handleStarClick = () => {
 
-        let newClickedMoviesArray = [];
-        const clickedMoviesStorage = localStorage.getItem("colorMovies");
-        const clickedMoviesObject = clickedMoviesStorage ? JSON.parse(clickedMoviesStorage) : {ids: []};
-            
-
-        if(clickedMoviesObject.ids.includes(props.movie.id)){
-            
-            newClickedMoviesArray = [...clickedMoviesObject.ids].filter(id => props.movie.id !== id);
-            localStorage.setItem("colorMovies", JSON.stringify({ids: newClickedMoviesArray}))
-            setIsMovieClicked(false)
-            
-        }
-        else
-        {
-            
-            newClickedMoviesArray = [...clickedMoviesObject.ids, props.movie.id];
-            localStorage.setItem("colorMovies", JSON.stringify({ids: newClickedMoviesArray}))
-            setIsMovieClicked(true)
-            
-        }
+        props.handleMovieStarClick(props.isMovieClicked, props.movie.id)
         
-        // setClickedMovies([...newClickedMoviesArray])
-
     }
 
     return (
 
 
-        <MyCard className={isMovieClicked ? "clickedMovieCard" : "movieCard" } sx={{ flexGrow: 1 }}>
+        <MyCard className={props.isMovieClicked ? "clickedMovieCard" : "movieCard" } sx={{ flexGrow: 1 }}>
             <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} sm={3}>
 
@@ -96,11 +62,13 @@ const MovieCard = (props: IProps) => {
                     </a>
 
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <a href={`https://www.themoviedb.org/movie/${props.movie.id}`}>
                         <MovieDetails sx={{ flexGrow: 1 }}>{props.movie.title} - {dateArray[0]}</MovieDetails>
                     </a>
                 </Grid>
+
                 <Grid item xs={12} sm={3}>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">
                         <Grid item sm={6}>
@@ -111,6 +79,7 @@ const MovieCard = (props: IProps) => {
                         </Grid>
                     </Grid>
                 </Grid>
+                
             </Grid>
         </MyCard>
 
@@ -122,6 +91,8 @@ const MovieCard = (props: IProps) => {
 interface IProps {
     key: number
     movie: IMovie
+    isMovieClicked: boolean
+    handleMovieStarClick: (isMovieClicked: boolean, movieId: number) => void
 }
 
 export default MovieCard;
