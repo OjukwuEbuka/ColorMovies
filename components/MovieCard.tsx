@@ -28,7 +28,8 @@ const MovieDetails = styled(Box)(({ theme }) => ({
 const MyCard = styled(Box)(({ theme }) => ({
 
     marginTop: "1rem",
-    border: "0.5px dashed brown",
+    // marginBottom: "1rem",
+    border: "0.09px dashed brown",
     borderRadius: "1rem",
     backgroundColor: "#b4e3c0",
   
@@ -36,23 +37,27 @@ const MyCard = styled(Box)(({ theme }) => ({
 
 const MovieCard = (props: IProps) => {
 
+    const dateArray = props.movie.release_date.split('-')
+
   return (
 
-    <MyCard sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={3}>
-          <MovieImage>
-              <img className="movieImage" src={`https://image.tmdb.org/t/p/w200/${props.movie.poster_path}`} />
-          </MovieImage>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <MovieDetails sx={{ flexGrow: 1 }}>{props.movie.title} - {props.movie.release_date}</MovieDetails>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <MovieDetails>{props.movie.vote_average}</MovieDetails>
-        </Grid>
-      </Grid>
-    </MyCard>
+    <a href={`https://www.themoviedb.org/movie/${props.movie.id}`}>
+        <MyCard className="movieCard" sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={3}>
+                    <MovieImage>
+                        <img className="movieImage" src={`https://image.tmdb.org/t/p/w200/${props.movie.poster_path}`} />
+                    </MovieImage>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <MovieDetails sx={{ flexGrow: 1 }}>{props.movie.title} - {dateArray[0]}</MovieDetails>
+                </Grid>
+                <Grid item xs={12} sm={3}>
+                    <MovieDetails>{props.movie.vote_average}/10</MovieDetails>
+                </Grid>
+            </Grid>
+        </MyCard>
+    </a>
 
   );
 

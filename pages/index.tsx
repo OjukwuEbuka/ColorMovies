@@ -4,11 +4,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { keys } from '../config'
 import { 
-  Container, 
+  IconButton, 
   Button, 
   styled, 
   Box 
 } from '@mui/material'
+import { ArrowUpward, ArrowDownward } from '@mui/icons-material'
 
 import NavBar from '../components/NavBar'
 import MovieCard from '../components/MovieCard'
@@ -25,13 +26,13 @@ const LoadButton = styled(Button)(({ theme }) => ({
 
   backgroundColor: "#023047",
   margin: "1rem",
-  alignSelf: "center"
 
 }));
 
 const Home: NextPage = () => {
 
   const [movies, setMovies] = useState<IMovie[]>([])
+  const [movieSort, setMovieSort] = useState("Ascending")
   const maxMoviePage = 25;
  
   useEffect(() => {
@@ -43,7 +44,6 @@ const Home: NextPage = () => {
     }
   
   })
-
 
   const handleLoadMovies = async (moviePageNumber: number) => {
 
@@ -80,6 +80,38 @@ const Home: NextPage = () => {
     
   }
 
+  const sortDescending = () => {
+
+    let currentMovies = [...movies].sort((movie1: IMovie, movie2: IMovie) => {
+      if(parseFloat(movie1.vote_average) > parseFloat(movie2.vote_average)){
+          return -1;
+      } else if(parseFloat(movie1.vote_average) < parseFloat(movie2.vote_average)) {
+          return 1;
+      } else {
+          return 0;
+      }
+    });
+
+    setMovies(currentMovies)
+    
+  }
+
+  const sortAscending = () => {
+
+    let currentMovies = [...movies].sort((movie1: IMovie, movie2: IMovie) => {
+      if(parseFloat(movie1.vote_average) < parseFloat(movie2.vote_average)){
+          return -1;
+      } else if(parseFloat(movie1.vote_average) > parseFloat(movie2.vote_average)) {
+          return 1;
+      } else {
+          return 0;
+      }
+    });
+
+    setMovies(currentMovies)
+    
+  }
+
   return (
     <div>
       <Head>
@@ -95,6 +127,19 @@ const Home: NextPage = () => {
 
 
           <MovieContainer className="movieContainer">
+        
+            <Box  sx={{
+              display: 'flex',
+              justifyContent: 'right',
+            }}>
+              <IconButton onClick={sortDescending} title="Sort Descending" >
+                <ArrowUpward />
+              </IconButton>
+              <IconButton onClick={sortAscending} title="Sort Ascending" >
+                <ArrowDownward />
+              </IconButton>
+            </Box>
+
             <div>
 
               {
@@ -107,7 +152,14 @@ const Home: NextPage = () => {
               
             </div>
 
-            <LoadButton onClick={handleLoadMore} size="large" variant="contained" >Load More</LoadButton>
+              <Box  sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                p: 1,
+                m: 1,
+              }}>
+                <LoadButton onClick={handleLoadMore} size="large" variant="contained" >Load More</LoadButton>
+              </Box>
           
           </MovieContainer>
       </main>
