@@ -69,8 +69,9 @@ const Home: NextPage = () => {
     try {
 
       let loadedMovies: IMovie[] = [];
+      let API_KEY = process.env.API_KEY || keys.apiKey
   
-      let res = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${keys.apiKey}&page=${moviePageNumber}`)
+      let res = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&page=${moviePageNumber}`)
       let jsonData = await res.json() 
     
       if(jsonData.results && jsonData.results.length > 1){
