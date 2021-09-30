@@ -35,6 +35,7 @@ a {
 
 .clickedMovieCard{
   background-color: #536d5a !important;
+  color: white !important;
 }
 
 @media only screen and (max-width: 600px) {
