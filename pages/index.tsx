@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import { keys } from '../config'
+// import { keys } from '../config'
 import { 
   IconButton, 
   Button, 
@@ -69,7 +69,7 @@ const Home: NextPage = () => {
     try {
 
       let loadedMovies: IMovie[] = [];
-      let API_KEY = process.env.API_KEY || keys.apiKey
+      let API_KEY = process.env.API_KEY;
   
       let res = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&page=${moviePageNumber}`)
       let jsonData = await res.json() 
